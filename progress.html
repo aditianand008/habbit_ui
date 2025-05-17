@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Progress & Habit</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #b3c9a5;
+      font-family: serif;
+      color: #6a3d12;
+      min-height: 100vh;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .base-bg {
+      position: fixed;
+      inset: 0;
+      background-image: url('Progress.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .overlay-image {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://i.ibb.co/C5p3g4L8/image-removebg-preview-1-1.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.15;
+      z-index: 5;
+      pointer-events: none;
+    }
+    nav {
+      background-color: #704b1d;
+      color: white;
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 20;
+    }
+    nav .nav-links a {
+      margin-left: 2rem;
+      font-size: 1.125rem;
+      text-decoration: none;
+      color: white;
+      transition: color 0.3s ease, text-decoration 0.3s ease;
+      cursor: pointer;
+    }
+    nav .nav-links a:hover,
+    nav .nav-links a.active {
+      text-decoration: underline;
+      color: #fb923c;
+    }
+    main {
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .glass {
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      padding: 1.5rem;
+      width: 18rem;
+      color: white;
+      user-select: none;
+    }
+    .calendar-day {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 9999px;
+      cursor: default;
+    }
+    .calendar-day.active {
+      background-color: #fb923c;
+      color: white;
+      font-weight: 600;
+    }
+    .calendar-day:hover {
+      background-color: #f97316;
+      color: white;
+    }
+    /* Modal styling */
+    #habitModal {
+      display: none; /* hidden by default */
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 50;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      color: #f97316;
+      font-family: serif;
+      overflow-y: auto;
+    }
+    #habitModal.active {
+      display: flex;
+      flex-direction: column;
+    }
+    #habitModal .modal-content {
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 20px #fb923caa;
+      text-align: center;
+      color: white;
+      user-select: text;
+    }
+    #habitModal .close-btn {
+      margin-top: 1.5rem;
+      cursor: pointer;
+      background: #fb923c;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 9999px;
+      transition: background-color 0.3s ease;
+    }
+    #habitModal .close-btn:hover {
+      background-color: #f97316;
+    }
+  </style>
+</head>
+<body>
+  <div class="base-bg"></div>
+  <div class="overlay-image"></div>
+
+  <nav>
+    <div class="text-xl font-bold">🌳</div>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="#">Insights</a>
+      <a href="#" id="habitBtn" class="active">My Habit</a>
+      <a href="#">Settings</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1 class="text-4xl font-semibold mb-2">Your Tree has been nourished</h1>
+    <p class="text-lg mb-6 max-w-xl">
+      Consistency has paid off so far. Your sapling is growing - One leaf at a time.
+    </p>
+
+    <div class="glass text-center">
+      <h2 class="text-md mb-2 font-semibold">February 2025</h2>
+      <div class="grid grid-cols-7 gap-1 text-sm text-white">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        <span></span><span></span><span></span><span></span><span class="calendar-day">1</span><span class="calendar-day">2</span><span class="calendar-day">3</span>
+        <span class="calendar-day">4</span><span class="calendar-day">5</span><span class="calendar-day">6</span><span class="calendar-day">7</span><span class="calendar-day">8</span><span class="calendar-day">9</span><span class="calendar-day">10</span>
+        <span class="calendar-day">11</span><span class="calendar-day">12</span><span class="calendar-day">13</span><span class="calendar-day">14</span><span class="calendar-day">15</span><span class="calendar-day">16</span><span class="calendar-day active">17</span>
+        <span class="calendar-day">18</span><span class="calendar-day">19</span><span class="calendar-day">20</span><span class="calendar-day">21</span><span class="calendar-day">22</span><span class="calendar-day">23</span><span class="calendar-day">24</span>
+        <span class="calendar-day">25</span><span class="calendar-day">26</span><span class="calendar-day">27</span><span class="calendar-day">28</span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <p class="text-xl mt-6 text-[#5b2d10]">
+      You are on a <span class="text-orange-600 font-bold">12 Day streak</span>. Keep Going!
+    </p>
+  </main>
+
+  <!-- Habit Modal -->
+  <div id="habitModal" role="dialog" aria-modal="true" aria-labelledby="habitModalTitle" tabindex="-1">
+    <div class="modal-content">
+      <h2 id="habitModalTitle" class="text-3xl font-semibold mb-4">My Habit Tracker</h2>
+      <p>Track your daily habits here. Stay consistent and watch your progress grow day by day!</p>
+      <p class="mt-4">[You can customize this content with your actual habit tracking features]</p>
+      <button class="close-btn" id="closeHabitBtn">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const habitBtn = document.getElementById('habitBtn');
+    const habitModal = document.getElementById('habitModal');
+    const closeHabitBtn = document.getElementById('closeHabitBtn');
+
+    habitBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      habitModal.classList.add('active');
+      habitModal.focus();
+    });
+
+    closeHabitBtn.addEventListener('click', () => {
+      habitModal.classList.remove('active');
+      habitBtn.focus();
+    });
+
+    // Optional: close modal on ESC key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && habitModal.classList.contains('active')) {
+        habitModal.classList.remove('active');
+        habitBtn.focus();
+      }
+    });
+  </script>
+</body>
+</html>
